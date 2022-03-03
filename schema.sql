@@ -1,46 +1,38 @@
+DROP DATABASE IF EXISTS reviews;
 CREATE DATABASE reviews;
 
-CREATE TABLE product (
- id BIGSERIAL NOT NULL
-);
-
-ALTER TABLE product ADD CONSTRAINT product_pkey PRIMARY KEY (id);
+DROP TABLE IF EXISTS reviews, reviews_photos, characteristics, characteristic_reviews;
 
 CREATE TABLE reviews (
- id BIGSERIAL NOT NULL,
+ id BIGSERIAL PRIMARY KEY,
+ product_id INTEGER,
  rating INTEGER NOT NULL,
- summary VARCHAR(60) NOT NULL DEFAULT 'NULL',
+ date VARCHAR(30) NOT NULL,
+ summary VARCHAR(60) NOT NULL,
+ body VARCHAR(1000) NOT NULL,
  recommend INTEGER NOT NULL,
- response VARCHAR NOT NULL DEFAULT 'NULL',
- body VARCHAR(1000) NOT NULL DEFAULT 'NULL',
- date VARCHAR(30) NOT NULL DEFAULT 'NULL',
- helpfulness INTEGER(10) NOT NULL,
- id_product INTEGER
+ reported INTEGER NOT NULL,
+ reviewer_name VARCHAR(60) NOT NULL,
+ reviewer_email VARCHAR(60) NOT NULL,
+ response VARCHAR(1000) NOT NULL,
+ helpfulness INTEGER NOT NULL
 );
 
-ALTER TABLE reviews ADD CONSTRAINT reviews_pkey PRIMARY KEY (id);
-
-CREATE TABLE reviewers (
- id BIGSERIAL NOT NULL,
- nickname VARCHAR(60) NOT NULL DEFAULT 'NULL',
- email VARCHAR(60) NOT NULL DEFAULT 'NULL',
- id_reviews INTEGER NOT NULL
+CREATE TABLE reviews_photos (
+ id BIGSERIAL PRIMARY KEY,
+ review_id INTEGER NOT NULL,
+ url VARCHAR(200)
 );
-
-ALTER TABLE reviewers ADD CONSTRAINT reviewers_pkey PRIMARY KEY (id);
-
-CREATE TABLE photos (
- id BIGSERIAL NOT NULL,
- url VARCHAR(200),
- id_reviews INTEGER NOT NULL
-);
-
-ALTER TABLE photos ADD CONSTRAINT photos_pkey PRIMARY KEY (id);
 
 CREATE TABLE characteristics (
- id BIGSERIAL,
- name VARCHAR(60) NOT NULL DEFAULT 'NULL',
- char_id INTEGER NOT NULL,
- value VARCHAR(20) NOT NULL DEFAULT 'NULL',
- id_reviews INTEGER NOT NULL
+ id BIGSERIAL PRIMARY KEY,
+ product_id INTEGER NOT NULL,
+ name VARCHAR(60) NOT NULL
+);
+
+CREATE TABLE characteristic_reviews (
+  id BIGSERIAL PRIMARY KEY,
+  characteristic_id INTEGER NOT NULL,
+  review_id INTEGER NOT NULL,
+  value VARCHAR(20) NOT NULL
 );
