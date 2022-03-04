@@ -1,46 +1,48 @@
-CREATE DATABASE reviews;
+DROP DATABASE IF EXISTS reviewsdb;
+CREATE DATABASE reviewsdb;
 
-CREATE TABLE product (
- id BIGSERIAL NOT NULL
-);
+\c reviewsdb;
 
-ALTER TABLE product ADD CONSTRAINT product_pkey PRIMARY KEY (id);
+DROP TABLE IF EXISTS reviews, photos, characteristics, characteristic_reviews;
 
 CREATE TABLE reviews (
- id BIGSERIAL NOT NULL,
+ id BIGSERIAL PRIMARY KEY,
+ product_id INTEGER,
  rating INTEGER NOT NULL,
- summary VARCHAR(60) NOT NULL DEFAULT 'NULL',
- recommend INTEGER NOT NULL,
- response VARCHAR NOT NULL DEFAULT 'NULL',
- body VARCHAR(1000) NOT NULL DEFAULT 'NULL',
- date VARCHAR(30) NOT NULL DEFAULT 'NULL',
- helpfulness INTEGER(10) NOT NULL,
- id_product INTEGER
+ date BIGINT NOT NULL,
+ summary VARCHAR(250) NOT NULL,
+ body VARCHAR(1000) NOT NULL,
+ recommend BOOLEAN NOT NULL,
+ reported BOOLEAN NOT NULL,
+ reviewer_name VARCHAR(60) NOT NULL,
+ reviewer_email VARCHAR(75) NOT NULL,
+ response VARCHAR(1000) NOT NULL,
+ helpfulness INTEGER NOT NULL
 );
-
-ALTER TABLE reviews ADD CONSTRAINT reviews_pkey PRIMARY KEY (id);
-
-CREATE TABLE reviewers (
- id BIGSERIAL NOT NULL,
- nickname VARCHAR(60) NOT NULL DEFAULT 'NULL',
- email VARCHAR(60) NOT NULL DEFAULT 'NULL',
- id_reviews INTEGER NOT NULL
-);
-
-ALTER TABLE reviewers ADD CONSTRAINT reviewers_pkey PRIMARY KEY (id);
 
 CREATE TABLE photos (
- id BIGSERIAL NOT NULL,
+ id BIGSERIAL PRIMARY KEY,
+ review_id INTEGER NOT NULL,
  url VARCHAR(200),
- id_reviews INTEGER NOT NULL
+ FOREIGN KEY (review_id) REFERENCES reviews(id)
 );
-
-ALTER TABLE photos ADD CONSTRAINT photos_pkey PRIMARY KEY (id);
 
 CREATE TABLE characteristics (
- id BIGSERIAL,
- name VARCHAR(60) NOT NULL DEFAULT 'NULL',
- char_id INTEGER NOT NULL,
- value VARCHAR(20) NOT NULL DEFAULT 'NULL',
- id_reviews INTEGER NOT NULL
+ id BIGSERIAL PRIMARY KEY,
+ product_id INTEGER NOT NULL,
+ name VARCHAR(75) NOT NULL
 );
+
+CREATE TABLE characteristic_reviews (
+  id BIGSERIAL PRIMARY KEY,
+  characteristic_id INTEGER NOT NULL,
+  review_id INTEGER NOT NULL,
+  value VARCHAR(50) NOT NULL,
+  FOREIGN KEY (characteristic_id) REFERENCES characteristics(id),
+  FOREIGN KEY (review_id) REFERENCES reviews(id)
+);
+
+COPY reviews FROM '/Users/jinicha/Desktop/seip2201/sdc/csv/reviews.csv' DELIMITER ',' CSV HEADER;
+COPY photos FROM '/Users/jinicha/Desktop/seip2201/sdc/csv/reviews_photos.csv' DELIMITER ',' CSV HEADER;
+COPY characteristics FROM '/Users/jinicha/Desktop/seip2201/sdc/csv/characteristics.csv' DELIMITER ',' CSV HEADER;
+COPY characteristic_reviews FROM '/Users/jinicha/Desktop/seip2201/sdc/csv/characteristic_reviews.csv' DELIMITER ',' CSV HEADER;
