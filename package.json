@@ -1,0 +1,29 @@
+{
+  "name": "reviews-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mongoSchema.js",
+  "scripts": {
+    "server": "nodemon server/index.js -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yoshi-Logistics/reviews-api.git"
+  },
+  "author": "Jini",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yoshi-Logistics/reviews-api/issues"
+  },
+  "homepage": "https://github.com/Yoshi-Logistics/reviews-api#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4"
+  }
+}
