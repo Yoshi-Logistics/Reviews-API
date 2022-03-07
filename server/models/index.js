@@ -23,7 +23,17 @@ module.exports = {
 
   },
   upvote: (reviewId, cb) => {
-
+    const query = {
+      text: 'UPDATE reviews SET helpfulness = helpfulness + 1 WHERE id = $1',
+      values: [reviewId],
+    };
+    pool.query(query, (err) => {
+      if (err) {
+        cb(err);
+      } else {
+        cb(null);
+      }
+    });
   },
   report: (reviewId, cb) => {
     const query = {
