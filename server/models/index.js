@@ -14,4 +14,28 @@ module.exports = {
       }
     });
   },
+  getMeta: (productId, cb) => {
+    // const query = {
+    //   text: 'SELECT *  '
+    // },
+  },
+  postReview: () => {
+
+  },
+  upvote: (reviewId, cb) => {
+
+  },
+  report: (reviewId, cb) => {
+    const query = {
+      text: 'UPDATE reviews SET reported = $1 WHERE id = $2',
+      values: [true, reviewId],
+    };
+    pool.query(query, (err) => {
+      if (err) {
+        cb(err);
+      } else {
+        cb(null);
+      }
+    });
+  },
 };

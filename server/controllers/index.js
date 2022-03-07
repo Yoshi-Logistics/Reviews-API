@@ -14,7 +14,13 @@ module.exports = {
   },
 
   getMeta: (req, res) => {
-    console.log('here');
+    model.getMeta(req.query.product_id, (err, results) => {
+      if (err) {
+        res.sendStatus(400);
+      } else {
+        res.status(200).send(results);
+      }
+    });
   },
 
   postReview: (req, res) => {
@@ -22,10 +28,22 @@ module.exports = {
   },
 
   upvote: (req, res) => {
-
+    model.upvote(req.params.review_id, (err) => {
+      if (err) {
+        res.sendStatus(400);
+      } else {
+        res.sendStatus(204);
+      }
+    });
   },
 
   report: (req, res) => {
-
+    model.report(req.params.review_id, (err) => {
+      if (err) {
+        res.sendStatus(400);
+      } else {
+        res.sendStatus(204);
+      }
+    });
   },
 };
