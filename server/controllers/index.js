@@ -7,6 +7,7 @@ module.exports = {
     model.getReviews(page, count, req.query.sort, req.query.product_id, (err, results) => {
       if (err) {
         res.sendStatus(400);
+        console.log(err, 'err in getReviews');
       } else {
         res.status(200).send(results);
       }
@@ -24,7 +25,38 @@ module.exports = {
   },
 
   postReview: (req, res) => {
-
+    console.log(
+      req.body.product_id,
+      req.body.rating,
+      Date.now(),
+      req.body.summary,
+      req.body.body,
+      req.body.recommend,
+      req.body.name,
+      req.body.email,
+      req.body.photos,
+      req.body.characteristics,
+    );
+    model.postReview(
+      req.body.product_id,
+      req.body.rating,
+      Date.now(),
+      req.body.summary,
+      req.body.body,
+      req.body.recommend,
+      req.body.name,
+      req.body.email,
+      req.body.photos,
+      req.body.characteristics,
+      (err) => {
+        if (err) {
+          res.sendStatus(400);
+          console.log(err, 'err in post');
+        } else {
+          res.sendStatus(201);
+        }
+      },
+    );
   },
 
   upvote: (req, res) => {
