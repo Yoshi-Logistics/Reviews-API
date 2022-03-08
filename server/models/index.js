@@ -29,7 +29,7 @@ module.exports = {
               'recommend', reviews.recommend,
               'response', reviews.response || null,
               'body', reviews.body,
-              'date', reviews.date,
+              'date', to_timestamp(reviews.date/1000)::date,
               'reviewer_name', reviews.reviewer_name,
               'helpfulness', reviews.helpfulness,
               'photos',
