@@ -4,12 +4,13 @@ module.exports = {
   getReviews: (req, res) => {
     const page = req.query.page || 1;
     const count = req.query.count || 5;
-    model.getReviews(page, count, req.query.sort, req.query.product_id, (err, results) => {
+    const sort = req.query.sort || 'relevant';
+    model.getReviews(page, count, sort, req.query.product_id, (err, results) => {
       if (err) {
         res.sendStatus(400);
         console.log(err, 'err in getReviews');
       } else {
-        res.status(200).send(results);
+        res.status(200).send(results.rows[0].json_build_object);
       }
     });
   },
@@ -17,6 +18,7 @@ module.exports = {
   getMeta: (req, res) => {
     model.getMeta(req.query.product_id, (err, results) => {
       if (err) {
+        console.log(err, 'err in getMeta');
         res.sendStatus(400);
       } else {
         res.status(200).send(results);
@@ -25,18 +27,6 @@ module.exports = {
   },
 
   postReview: (req, res) => {
-    console.log(
-      req.body.product_id,
-      req.body.rating,
-      Date.now(),
-      req.body.summary,
-      req.body.body,
-      req.body.recommend,
-      req.body.name,
-      req.body.email,
-      req.body.photos,
-      req.body.characteristics,
-    );
     model.postReview(
       req.body.product_id,
       req.body.rating,

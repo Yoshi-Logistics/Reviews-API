@@ -2,10 +2,19 @@ const { pool } = require('../../db');
 
 module.exports = {
   getReviews: (page, count, sort, productId, cb) => {
+    let order;
+    if (sort === 'relevant') {
+      order = 'reviews.date DESC, reviews.helpfulness DESC';
+    } else if (sort === 'date') {
+      order = 'reviews.date DESC';
+    } else {
+      order = 'reviews.helpfulness DESC';
+    }
+
     const query = {
       text: `SELECT json_build_object
       (
-        'product', ${productId},
+        'product', '${productId}',
         'page', ${page},
         'count', ${count},
         'results',
@@ -18,25 +27,31 @@ module.exports = {
               'rating', reviews.rating,
               'summary', reviews.summary,
               'recommend', reviews.recommend,
-              'response', reviews.response,
+              'response', reviews.response || null,
               'body', reviews.body,
               'date', reviews.date,
               'reviewer_name', reviews.reviewer_name,
               'helpfulness', reviews.helpfulness,
               'photos',
               (
-                SELECT json_agg
+                SELECT coalesce
                 (
-                  json_build_object
+                  json_agg
                   (
-                  'id', photos.id,
-                  'url', photos.url
+                    json_build_object
+                    (
+                    'id', photos.id,
+                    'url', photos.url
+                    )
                   )
+                  ::json, '[]'::json
                 )
                 FROM photos
                 WHERE photos.review_id = reviews.id
+
               )
             )
+            ORDER BY ${order}
           )
           FROM reviews
           WHERE reviews.product_id=$1 AND reviews.reported=false
