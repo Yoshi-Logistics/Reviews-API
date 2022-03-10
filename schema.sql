@@ -13,17 +13,17 @@ CREATE TABLE reviews (
  summary VARCHAR(250) NOT NULL,
  body VARCHAR(1000) NOT NULL,
  recommend BOOLEAN NOT NULL,
- reported BOOLEAN DEFAULT FALSE,
+ reported BOOLEAN NOT NULL,
  reviewer_name VARCHAR(60) NOT NULL,
  reviewer_email VARCHAR(75) NOT NULL,
  response VARCHAR(1000),
- helpfulness INTEGER DEFAULT 0
+ helpfulness INTEGER NOT NULL
 );
 
 CREATE TABLE photos (
  id BIGSERIAL PRIMARY KEY,
  review_id INTEGER NOT NULL,
- url VARCHAR(200),
+ url VARCHAR,
  FOREIGN KEY (review_id) REFERENCES reviews(id)
 );
 
@@ -42,6 +42,8 @@ CREATE TABLE characteristic_reviews (
   FOREIGN KEY (review_id) REFERENCES reviews(id)
 );
 
+CREATE INDEX reviews_id_idx ON reviews (id);
+
 COPY reviews FROM '/Users/jinicha/Desktop/seip2201/sdc/csv/reviews.csv' DELIMITER ',' CSV HEADER;
 COPY photos FROM '/Users/jinicha/Desktop/seip2201/sdc/csv/reviews_photos.csv' DELIMITER ',' CSV HEADER;
 COPY characteristics FROM '/Users/jinicha/Desktop/seip2201/sdc/csv/characteristics.csv' DELIMITER ',' CSV HEADER;
@@ -51,3 +53,4 @@ SELECT setval(pg_get_serial_sequence('reviews', 'id'), coalesce(max(id), 0)+1 , 
 SELECT setval(pg_get_serial_sequence('photos', 'id'), coalesce(max(id), 0)+1 , false) FROM photos;
 SELECT setval(pg_get_serial_sequence('characteristics', 'id'), coalesce(max(id), 0)+1 , false) FROM characteristics;
 SELECT setval(pg_get_serial_sequence('characteristic_reviews', 'id'), coalesce(max(id), 0)+1 , false) FROM characteristic_reviews;
+
