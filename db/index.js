@@ -1,10 +1,12 @@
 const { Pool } = require('pg');
+const { config } = require('../config');
 
 const pool = new Pool({
-  user: 'jinicha',
-  database: 'reviewsdb',
-  port: 5432,
-  host: 'localhost',
+  user: config.user,
+  password: config.password,
+  database: config.database,
+  port: config.port,
+  host: config.host,
 });
 
 module.exports = {
