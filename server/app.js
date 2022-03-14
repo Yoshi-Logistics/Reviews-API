@@ -1,5 +1,5 @@
 const express = require('express');
-const mountRoutes = require('./routes');
+const router = require('./routes');
 
 const app = express();
 
@@ -11,7 +11,11 @@ app.get('/', (req, res) => {
   res.send('This is server');
 });
 
-mountRoutes(app);
+app.use('/reviews', router);
+
+app.get('/loaderio-127612f32e9b2beb1481e04fbfac39e0/', (req, res) => {
+  res.send('loaderio-127612f32e9b2beb1481e04fbfac39e0');
+});
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);

@@ -2,9 +2,9 @@
   "name": "reviews-api",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server/app.js",
   "scripts": {
-    "server": "nodemon app.js -w",
+    "server": "nodemon server/app.js -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

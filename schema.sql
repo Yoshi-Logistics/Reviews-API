@@ -42,7 +42,9 @@ CREATE TABLE characteristic_reviews (
   FOREIGN KEY (review_id) REFERENCES reviews(id)
 );
 
-CREATE INDEX reviews_id_idx ON reviews (id);
+CREATE INDEX photos_review_id_idx ON photos (review_id);
+CREATE INDEX reviews_product_id_idx ON reviews (product_id);
+CREATE INDEX reviews_reported_idx ON reviews (reported);
 
 COPY reviews FROM '/Users/jinicha/Desktop/seip2201/sdc/csv/reviews.csv' DELIMITER ',' CSV HEADER;
 COPY photos FROM '/Users/jinicha/Desktop/seip2201/sdc/csv/reviews_photos.csv' DELIMITER ',' CSV HEADER;
